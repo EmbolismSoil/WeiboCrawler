@@ -53,9 +53,6 @@ void RelationStroage::save(const UserRelation &relation)
     auto f_values = boost::join(follow_values, ", ");
     follow_sql_fmt %  f_values;
 
-
-    std::cout << "fans sql:  " << fans_sql_fmt.str() << std::endl;
-    std::cout << "follow sql: " << follow_sql_fmt.str() << std::endl;
     _db.exec(QString::fromStdString(fans_sql_fmt.str()));
     _db.exec(QString::fromStdString(follow_sql_fmt.str()));
 

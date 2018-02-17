@@ -15,6 +15,8 @@
 class PageProxy
 {
 public:
+    std::shared_ptr<QWebEnginePage> _page;
+
     explicit PageProxy(std::shared_ptr<QWebEnginePage> page,
                        std::shared_ptr<MainEventLoop>  loop):
         _page(page),
@@ -54,7 +56,7 @@ public:
         return pms->get_future();
     }
 
-    virtual ~PageProxy(){
+    virtual ~PageProxy(){        
     }
 
 signals:   
@@ -62,7 +64,6 @@ signals:
 public slots:
 
 private:
-    std::shared_ptr<QWebEnginePage> _page;
     std::shared_ptr<MainEventLoop> _loop;
 };
 

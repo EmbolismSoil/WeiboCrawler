@@ -11,11 +11,14 @@
 class UserRelationExtractor
 {
 public:
-    UserRelationExtractor(std::shared_ptr<HtmlLoader> const& loader, std::string const& page_id, std::string const& config_path);
+    UserRelationExtractor(std::string const& config_path);
     void extract(UserRelation &relation);
+    void set_page_id(std::string const&);
+    void set_loader(std::shared_ptr<HtmlLoader> const& loader);
+
 private:
     std::shared_ptr<HtmlLoader> _loader;
-    std::string const _page_id;
+    std::string  _page_id;
     std::string _page_num_selector;
     std::string _follow_list_selector;
     std::string _fans_list_selector;

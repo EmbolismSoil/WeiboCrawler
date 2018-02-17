@@ -73,13 +73,15 @@ public:
 
         _loop->post_task([this, pms, url]() mutable{
             //new an page then load the url
-            auto page = std::make_shared<QWebEnginePage>();
+            auto page = _loop->get_page();//std::make_shared<QWebEnginePage>();
 
             connect(page.get(), SIGNAL(loadFinished(bool)), &_signal_mapper, SLOT(map()));
             _signal_mapper.setMapping(page.get(), (new PageId(page, pms)));
             connect(&_signal_mapper, SIGNAL(mapped(QObject*)), this, SLOT(on_load_finished(QObject*)));
 
             page->load(QUrl(QString::fromStdString(url)));
+
+            //clean ref
         });
 
         return pms->get_future();
@@ -111,7 +113,7 @@ public slots:
     }
 
     void on_load_finished(QObject* obj)
-    {
+    {        
         PageId *page_id = dynamic_cast<PageId*>(obj);
         if (!page_id){
             return;
@@ -119,13 +121,14 @@ public slots:
 
         auto page = page_id->get_page();
         auto pms = page_id->get_promise();
-        PageProxy page_proxy(page, _loop);
-        pms->set_value(page_proxy);
+
+        delete page_id;
+
+        pms->set_value(PageProxy(page, _loop));
 
         disconnect(page.get(), SIGNAL(loadFinished(bool)), &_signal_mapper, SLOT(map()));
         _signal_mapper.removeMappings(page.get());
         disconnect(&_signal_mapper, SIGNAL(mapped(QObject*)), this, SLOT(on_load_finished(QObject*)));
-        delete page_id;
     }
 
 private:

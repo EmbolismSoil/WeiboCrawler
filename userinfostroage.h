@@ -37,7 +37,7 @@ public:
         _db.commit(); // TODO: rollback
     }
 
-    bool has_uid(int uid)
+    bool has_uid(std::string uid)
     {
         boost::format sql_fmt("SELECT count(1) FROM user_info WHERE uid = %s");
         sql_fmt % to_mysql_value(uid);
@@ -74,7 +74,7 @@ private:
     {
         boost::format sql_fmt(R"(INSERT INTO user_info
                               (uid, page_id, name, fans_url, followers_url, fans_cnt, followers_cnt, weibo_cnt)
-                              VALUES (%s, %s, %s, %s, %s, %s, %s))");
+                              VALUES (%s, %s, %s, %s, %s, %s, %s, %s))");
 
         sql_fmt % to_mysql_value(user_info.uid)
                 % to_mysql_value(user_info.page_id)

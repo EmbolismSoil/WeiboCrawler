@@ -7,6 +7,9 @@
 #include <boost/noncopyable.hpp>
 #include <thread>
 #include <memory>
+#include <QWebEnginePage>
+#include <vector>
+#include <QTimer>
 
 class Task: public QObject
 {
@@ -85,11 +88,21 @@ public:
         _keeps.push_back(obj);
     }
 
+    std::shared_ptr<QWebEnginePage> get_page()
+    {
+        auto page = std::make_shared<QWebEnginePage>();
+        _page_pool.push_back(page);
+        return page;
+    }
+
 private:
     explicit MainEventLoop(QObject *parent = nullptr);
     std::thread _main_thread;
     QApplication *_app;
     std::vector<std::shared_ptr<QObject>> _keeps;
+
+    std::vector<std::shared_ptr<QWebEnginePage>> _page_pool;
+    QTimer _gc_timer;
 
 signals:
     void post_task_sginal(Task* );
@@ -98,7 +111,22 @@ signals:
 public slots:
     void on_post_task(Task* task){
         task->call();
-        //delete task;
+        delete task;
+    }
+
+    void on_gc(void)
+    {
+        if (_page_pool.empty()){
+            return;
+        }
+
+        for(auto pos = _page_pool.begin(); pos != _page_pool.end();){
+            if (pos->use_count() == 1){
+                pos = _page_pool.erase(pos);
+            }else{
+                ++pos;
+            }
+        }
     }
 };
 

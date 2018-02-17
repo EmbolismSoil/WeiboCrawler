@@ -5,10 +5,7 @@
 #include <boost/algorithm/string.hpp>
 
 UserRelationExtractor::UserRelationExtractor(
-        const std::shared_ptr<HtmlLoader> &loader,
-        const std::string &page_id, std::string const& config_path):
-    _loader(loader),
-    _page_id(page_id)
+         std::string const& config_path)
 {
     Json::Reader reader;
     std::ifstream config_json(config_path);
@@ -50,9 +47,19 @@ void UserRelationExtractor::extract(UserRelation &relation)
     _extract_fans(relation);
 }
 
+void UserRelationExtractor::set_page_id(const std::string &id)
+{
+    _page_id = id;
+}
+
+void UserRelationExtractor::set_loader(const std::shared_ptr<HtmlLoader> &loader)
+{
+    _loader = loader;
+}
+
 void UserRelationExtractor::_extract_follow(UserRelation &relation)
 {
-    boost::format fmt("https://www.weibo.com/p/%s/follow?page=%d");
+    boost::format fmt("http://www.weibo.com/p/%s/follow?page=%d");
     _do_extract_uids(relation.followers_uid, fmt);
 }
 
@@ -115,7 +122,7 @@ void UserRelationExtractor::_extract_a_page_fans(UserRelation &relation, PagePro
 
 void UserRelationExtractor::_extract_fans(UserRelation &relation)
 {
-    boost::format fans_url_fmt("https://weibo.com/p/%s/follow?relate=fans&page=%d");
+    boost::format fans_url_fmt("http://www.weibo.com/p/%s/follow?relate=fans&page=%d");
     _do_extract_uids(relation.fans_uid, fans_url_fmt);
 }
 

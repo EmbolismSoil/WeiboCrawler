@@ -10,17 +10,15 @@
 #include "maineventloop.h"
 #include "userrelationextractor.h"
 #include "relationstroage.h"
+#include "scrawlercontroller.h"
 #include "mysqlclientfactory.h"
 
 int main(int argc,  char* argv[])
 {
-    auto main_loop = MainEventLoop::instance(argc, argv);
     std::string config_path("/home/lee/WeiboCrawler/config.json");
 
-    std::thread t([main_loop, &config_path] () mutable{
+    std::thread t([&config_path, argc, argv] () mutable{
         MysqlClientFactory factory(config_path);
-        auto loader = HtmlLoader::instance(main_loop);
-        main_loop->keep(loader);
         auto db = factory.get_mysql_client("default");
 #if 0
         UserInfoStroage stroage(db);
@@ -42,20 +40,12 @@ int main(int argc,  char* argv[])
                       << ", weibo_cnt = " << user_info.weibo_cnt << std::endl;
         }
 #else
-        loader->login().get();
-
-        UserRelation relation;
-        relation.uid = "2365538803";
-        UserRelationExtractor relation_extractor(loader, "1005052365538803", config_path);
-        relation_extractor.extract(relation);
-        auto relation_stroage = RelationStroage(db);
-        relation_stroage.save(relation);
+        ScrawlerController controller(config_path, db, argc, argv);
+        controller.run("2365538803");
 #endif
     });
 
     t.join();
-    main_loop->exit();
-    main_loop.reset();
 
     return 0;
 }
