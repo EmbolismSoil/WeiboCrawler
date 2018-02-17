@@ -1,0 +1,32 @@
+{
+    "UserInfo":
+    {        
+        "uid_selector": "#Pl_Official_Headerv6__1 > div > div > div.shadow.S_shadow > div.pf_opt > div > div:nth-child(1) > a",
+        "name_selector": "#Pl_Official_Headerv6__1 > div > div > div.shadow.S_shadow > div.pf_username > h1",
+        "follower_url_selector": "#Pl_Core_T8CustomTriColumn__3 > div > div > div > table > tbody > tr > td:nth-child(1) > a",
+        "fans_url_selector": "#Pl_Core_T8CustomTriColumn__3 > div > div > div > table > tbody > tr > td:nth-child(2) > a",
+        "follower_cnt_selector": "#Pl_Core_T8CustomTriColumn__3 > div > div > div > table > tbody > tr > td:nth-child(1) > a > strong",
+        "fans_cnt_selector": "#Pl_Core_T8CustomTriColumn__3 > div > div > div > table > tbody > tr > td:nth-child(2) > a > strong",
+        "weibo_cnt_selector": "#Pl_Core_T8CustomTriColumn__3 > div > div > div > table > tbody > tr > td:nth-child(3) > a > strong",
+        "jquery": "/home/lee/WeiboCrawler/jquery.min.js"
+    },
+
+    "UserRelation":
+    {
+        "page_num_selector" : "#Pl_Official_HisRelation__59 > div > div > div > div.follow_box > div.WB_cardpage.S_line1 > div > a:last-child",
+        "follow_list_selector" : "#Pl_Official_HisRelation__59 > div > div > div > div.follow_box > div.follow_inner > ul > li",
+        "fans_list_selector" : "#Pl_Official_HisRelation__59 > div > div > div > div.follow_box > div.follow_inner > ul > li",
+        "jquery": "/home/lee/WeiboCrawler/jquery.min.js"
+    },
+
+    "stroage":
+    {
+        "default" :
+        {
+            "host": "localhost",
+            "user_name": "root",
+            "password": "lee",
+            "db": "weibo_data"
+        }
+    }
+}
