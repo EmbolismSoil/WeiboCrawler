@@ -82,7 +82,11 @@ void UserRelationExtractor::_do_extract_uids(std::vector<std::string> &relation,
         return;
     }
 
-    for (int cnt = 2; cnt < i_page_num; ++cnt){
+    if (i_page_num > 5){
+        i_page_num = 5;
+    }
+
+    for (int cnt = 2; cnt <= i_page_num; ++cnt){
         follow_url_fmt % _page_id % cnt;
         auto page = _loader->load(follow_url_fmt.str()).get();
         _extract_a_page_follow(relation, page);

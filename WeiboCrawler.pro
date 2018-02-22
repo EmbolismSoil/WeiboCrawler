@@ -58,4 +58,5 @@ FORMS +=
 
 DISTFILES += \
     config.json \
-    jquery.min.js
+    jquery.min.js \
+    RelationViewPage.html
